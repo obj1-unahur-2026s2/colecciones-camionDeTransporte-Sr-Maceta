@@ -1,9 +1,203 @@
 import cosas.*
 
-describe "group of test for cosas" {
+describe "knightRider" {
 
-  test "first test" {
-    assert.that(true)
-  }
+    test "el peso de knightRider es 500" {
+        assert.equals(500, knightRider.peso())
+    }
 
+    test "el peligro de knightRider es 10" {
+        assert.equals(10, knightRider.peligro())
+    }
+
+    test "knightRider ocupa 1 bulto" {
+        assert.equals(1, knightRider.bultos())
+    }
+}
+
+
+describe "bumblebee" {
+
+    test "bumblebee pesa 800" {
+        assert.equals(800, bumblebee.peso())
+    }
+
+    test "bumblebee comienza con el peligro de un auto" {
+        assert.equals(15, bumblebee.peligro())
+    }
+
+    test "bumblebee ocupa 2 bultos" {
+        assert.equals(2, bumblebee.bultos())
+    }
+
+    test "bumblebee se transforma en robot al sufrir cambios" {
+        bumblebee.sufrirCambios()
+        assert.equals(30, bumblebee.peligro())
+    }
+}
+
+
+describe "paqueteDeLadrillos" {
+
+    test "un ladrillo pesa 2" {
+        assert.equals(2, paqueteDeLadrillos.peso())
+    }
+
+    test "un paquete de hasta 100 ladrillos ocupa 1 bulto" {
+        assert.equals(1, paqueteDeLadrillos.bultos())
+    }
+
+    test "agregar ladrillos aumenta el peso" {
+        paqueteDeLadrillos.agregarLadrillos(9)
+        assert.equals(20, paqueteDeLadrillos.peso())
+    }
+
+    test "sufrir cambios agrega 12 ladrillos" {
+        paqueteDeLadrillos.sufrirCambios()
+        assert.equals(26, paqueteDeLadrillos.peso())
+    }
+
+    test "un paquete de mas de 100 ladrillos ocupa 2 bultos" {
+        paqueteDeLadrillos.agregarLadrillos(100)
+        assert.equals(2, paqueteDeLadrillos.bultos())
+    }
+}
+
+
+describe "arenaAGranel" {
+
+    test "arena a granel pesa 10 inicialmente" {
+        assert.equals(10, arenaAGranel.peso())
+    }
+
+    test "arena a granel ocupa 1 bulto" {
+        assert.equals(1, arenaAGranel.bultos())
+    }
+
+    test "agregar peso aumenta el peso" {
+        arenaAGranel.agregarPeso(20)
+        assert.equals(30, arenaAGranel.peso())
+    }
+
+    test "quitar peso disminuye el peso" {
+        arenaAGranel.quitarPeso(5)
+        assert.equals(5, arenaAGranel.peso())
+    }
+
+    test "sufrir cambios quita 10 de peso" {
+        arenaAGranel.sufrirCambios()
+        assert.equals(0, arenaAGranel.peso())
+    }
+}
+
+
+describe "bateriaAntiaerea" {
+
+    test "la bateria con misiles pesa 300" {
+        assert.equals(300, bateriaAntiaerea.peso())
+    }
+
+    test "la bateria con misiles tiene peligro 100" {
+        assert.equals(100, bateriaAntiaerea.peligro())
+    }
+
+    test "la bateria con misiles ocupa 2 bultos" {
+        assert.equals(2, bateriaAntiaerea.bultos())
+    }
+
+    test "alternar misiles los quita" {
+        bateriaAntiaerea.alternarMisiles()
+        assert.equals(200, bateriaAntiaerea.peso())
+    }
+}
+
+
+describe "contenedorPortuario" {
+
+    test "un contenedor vacio pesa 100" {
+        assert.equals(100, contenedorPortuario.peso())
+    }
+
+    test "un contenedor vacio tiene peligro 0" {
+        assert.equals(0, contenedorPortuario.peligro())
+    }
+
+    test "un contenedor vacio ocupa 1 bulto" {
+        assert.equals(1, contenedorPortuario.bultos())
+    }
+
+    test "agregar un objeto aumenta el peso" {
+        contenedorPortuario.agregar(knightRider)
+        assert.equals(600, contenedorPortuario.peso())
+    }
+
+    test "el peligro del contenedor es el mayor peligro de sus objetos" {
+        contenedorPortuario.agregar(residuosRadioactivos)
+        assert.equals(200, contenedorPortuario.peligro())
+    }
+
+    test "los bultos del contenedor incluyen los bultos de sus objetos" {
+        contenedorPortuario.agregar(bumblebee)
+        assert.equals(3, contenedorPortuario.bultos())
+    }
+
+    test "sufrir cambios modifica los objetos del contenedor" {
+        contenedorPortuario.agregar(residuosRadioactivos)
+        contenedorPortuario.sufrirCambios()
+        assert.equals(20, residuosRadioactivos.peso())
+    }
+}
+
+
+describe "residuosRadioactivos" {
+
+    test "los residuos pesan 5 inicialmente" {
+        assert.equals(5, residuosRadioactivos.peso())
+    }
+
+    test "los residuos tienen peligro 200" {
+        assert.equals(200, residuosRadioactivos.peligro())
+    }
+
+    test "los residuos ocupan 1 bulto" {
+        assert.equals(1, residuosRadioactivos.bultos())
+    }
+
+    test "agregar peso aumenta el peso" {
+        residuosRadioactivos.agregarPeso(10)
+        assert.equals(15, residuosRadioactivos.peso())
+    }
+
+    test "quitar peso disminuye el peso" {
+        residuosRadioactivos.quitarPeso(3)
+        assert.equals(2, residuosRadioactivos.peso())
+    }
+
+    test "sufrir cambios agrega 15 de peso" {
+        residuosRadioactivos.sufrirCambios()
+        assert.equals(20, residuosRadioactivos.peso())
+    }
+}
+
+
+describe "embalajeDeSeguridad" {
+
+    test "el embalaje de seguridad ocupa 2 bultos" {
+        assert.equals(2, embalajeDeSeguridad.bultos())
+    }
+
+    test "el embalaje toma el peso del objeto envuelto" {
+        embalajeDeSeguridad.envolver(knightRider)
+        assert.equals(500, embalajeDeSeguridad.peso())
+    }
+
+    test "el embalaje reduce a la mitad el peligro del objeto" {
+        embalajeDeSeguridad.envolver(residuosRadioactivos)
+        assert.equals(100, embalajeDeSeguridad.peligro())
+    }
+
+    test "el embalaje puede envolver otro objeto" {
+        embalajeDeSeguridad.envolver(bumblebee)
+        assert.equals(800, embalajeDeSeguridad.peso())
+    }
 }

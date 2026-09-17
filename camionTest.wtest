@@ -1,9 +1,115 @@
 import camion.*
+import cosas.*
 
-describe "group of test for camion" {
+describe "camion" {
 
-  test "first test" {
-    assert.that(true)
+  test "el camion vacio tiene 0 bultos" {
+    assert.equals(0, camion.bultos())
   }
 
+  test "el camion vacio pesa 1000" {
+    assert.equals(1000, camion.peso())
+  }
+
+  test "el camion vacio no esta excedido de peso" {
+    assert.notThat(camion.estaExcedidoDePeso())
+  }
+  test "el camion vacio puede circular en ruta" {
+    assert.that(camion.puedeCircularEnRuta(100))
+  }
+
+  test "cargar una cosa aumenta los bultos" {
+    camion.cargar(knightRider)
+    assert.equals(1, camion.bultos())
+  }
+
+  test "cargar una cosa aumenta el peso" {
+    camion.cargar(bumblebee)
+    assert.equals(1800, camion.peso())
+  }
+
+  test "el camion esta excedido de peso cuando supera 2500" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.that(camion.estaExcedidoDePeso())
+  }
+
+  test "descargar una cosa la elimina de la carga" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    camion.descargar(knightRider)
+    camion.descargar(paqueteDeLadrillos)
+    assert.equals(2, camion.bultos())
+  }
+
+  test "hay carga con un peso determinado" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.that(camion.hayCargaConPeso(800))
+  }
+
+  test "no hay carga con un peso que no existe" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.notThat(camion.hayCargaConPeso(600))
+  }
+
+  test "peso de las cargas es par cuando todas tienen peso par" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.that(camion.pesoCargasEsPar())
+  }
+
+  test "se puede encontrar una carga por su peligro" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.equals(bumblebee, camion.cargaConPeligro(30))
+  }
+
+  test "se pueden obtener cargas con peligro mayor a un nivel" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.equals([bumblebee], camion.cargasConPeligroMayorA(20))
+  }
+
+  test "se pueden obtener cargas con peligro mayor al de otra cosa" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.equals([bumblebee], camion.cargasConPeligroMayorANivelDePeligroDe(knightRider))
+  }
+
+  test "el camion tiene una carga que supera un nivel de peligro" {
+    camion.cargar(bateriaAntiaerea)
+    assert.that(camion.cargaSupera(20))
+  }
+
+  test "el camion no tiene una carga que supere un nivel alto de peligro" {
+    camion.cargar(bateriaAntiaerea)
+    assert.notThat(camion.cargaSupera(100))
+  }
+
+  test "hay una carga entre dos valores de peso" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.that(camion.hayCargaEntre(700, 900))
+  }
+
+  test "la carga mas pesada es bumblebee" {
+    camion.cargar(bumblebee)
+    camion.cargar(knightRider)
+    camion.cargar(paqueteDeLadrillos)
+    assert.equals(bumblebee, camion.cargaMasPesada())
+  }
 }
